@@ -12,11 +12,12 @@ import modelJson from './ressources/model.json';
 })
 export class DeuxParDeuxComponent implements OnInit {
   map!: DeuxParDeuxMap;
-  constructor() { }
+  constructor() {
+    this.map = new DeuxParDeuxMap('Titre', 'Desc');
+  }
 
   ngOnInit(): void {
-    this.map = new DeuxParDeuxMap('Titre', 'Desc');
-    this.map.initialiserTableau(modelJson);
+    this.reset();
   }
 
   reset() {
