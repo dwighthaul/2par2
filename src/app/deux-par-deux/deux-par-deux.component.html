@@ -15,7 +15,6 @@
     <tr *ngFor="let row of map.tableau">
       <td *ngFor="let cell of row" (click)="selectCase(cell)"
         [ngClass]="[cell.getStatus().color, cell.isLocked ? 'border_red' : 'border_black']">
-
         <!--        [ngClass]="{ 'color' : cell.statusCase.color, 'test' : cell.isLocked ? 'red' : 'blue'}"> -->
 
 
