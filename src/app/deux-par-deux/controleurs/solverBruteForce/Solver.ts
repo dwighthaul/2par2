@@ -17,19 +17,17 @@ export class Solver {
 
   async solveMap() {
 
-    var nbrLoopMax = 20;
-    var nbrLoop = 0;
-    var nbrCasesVides;
+    let nbrLoopMax = 20;
+    let nbrLoop = 0;
+    let nbrCasesVides;
     do {
       nbrLoop++;
       nbrCasesVides = this.verifierSiTableauRemplis()
       if (nbrCasesVides > 0) {
 
-        for (var row of this.map.tableau) {
-          for (var cell of row) {
-            if (cell.getStatus() === Status.STATE_BLANK) {
-              this.verifierProximiteCell(cell);
-            }
+        for (let row of this.map.tableau) {
+          for (let cell of row) {
+            this.verifierProximiteCell(cell);
           }
         }
         await this.sleep(0); // then the created Promise can be awaited
@@ -42,7 +40,7 @@ export class Solver {
 
   verifierSiTableauRemplis() {
     return this.map.tableau.reduce((total, listeCase) => {
-      var nbrCaseVides = listeCase.filter((cell) => {
+      let nbrCaseVides = listeCase.filter((cell) => {
         return cell.getStatus().estDefault
       }).length;
       return total + nbrCaseVides;
@@ -52,9 +50,12 @@ export class Solver {
 
   // Verification des cellules de droite et bas
   verifierProximiteCell(cell: Case) {
-    this.solverLine.solverLigne(cell);
-    this.solverColumn.solverColumn(cell);
-
+    if (cell && cell.getStatus().estDefault) {
+      this.solverLine.solverLigne(cell);
+    }
+    if (cell && cell.getStatus().estDefault) {
+      this.solverColumn.solverColumn(cell);
+    }
     if (cell && cell.getStatus().estDefault) {
       this.calculerNombreCouleurSurLigne(cell);
     }
@@ -64,7 +65,7 @@ export class Solver {
     if (cell && cell.getStatus().estDefault) {
       this.calculerLigneIdentique(cell);
     }
-    /**/
+
   }
 
 
@@ -77,7 +78,7 @@ export class Solver {
         });
         // Si la liste est complete
         if (cellDiffDefault.length === this.map.tableau.length) {
-          var cellsDiff = this.arrayDiff(this.map.tableau[cell.x], this.map.tableau[i]);
+          let cellsDiff = this.arrayDiff(this.map.tableau[cell.x], this.map.tableau[i]);
           if (cellsDiff.length === 2) {
             this.completeCell(cell, cellsDiff);
           }
@@ -87,9 +88,9 @@ export class Solver {
   }
 
   arrayDiff(origine: Array<Case>, target: Array<Case>) {
-    var diff = [];
+    let diff = [];
 
-    for (var i = 0; i < this.map.tableau.length; i++) {
+    for (let i = 0; i < this.map.tableau.length; i++) {
       if (origine[i].getStatus() != target[i].getStatus()) {
         diff.push(target[i]);
       }
@@ -98,7 +99,7 @@ export class Solver {
   }
 
   completeCell(cell: Case, cellsDiff: Case[]) {
-    var cellTarget = cellsDiff.find((cellDepuisListe) => {
+    let cellTarget = cellsDiff.find((cellDepuisListe) => {
       console.log(cellDepuisListe.toString());
       return (cellDepuisListe.y === cell.y)
     })
@@ -109,17 +110,15 @@ export class Solver {
   }
 
   calculerNombreCouleurSurLigne(cell: Case) {
-    //console.log('La cellule %s a analyser', cell.toString());
 
-    for (var statusBuffer of Status.listeStatus) {
-      //      console.log(statusBuffer)
+    for (let statusBuffer of Status.listeStatus) {
 
       // Si différent de défault
       if (!statusBuffer.estDefault) {
 
-        var nombreCelluleBLank = this.map.recupererNombreElementLigneAvecStatus(cell.x, Status.STATE_BLANK);
+        let nombreCelluleBLank = this.map.recupererNombreElementLigneAvecStatus(cell.x, Status.STATE_BLANK);
 
-        var nombreCelluleSurStatus = this.map.recupererNombreElementLigneAvecStatus(cell.x, statusBuffer);
+        let nombreCelluleSurStatus = this.map.recupererNombreElementLigneAvecStatus(cell.x, statusBuffer);
 
         // Si aucune
         if (nombreCelluleBLank != 0) {
@@ -134,24 +133,20 @@ export class Solver {
   }
 
   calculerNombreCouleurSurColonne(cell: Case) {
-    //    console.log('La cellule %s a analyser', cell.toString());
 
-    for (var statusBuffer of Status.listeStatus) {
-      //      console.log(statusBuffer)
+    for (let statusBuffer of Status.listeStatus) {
 
       // Si différent de défault
       if (!statusBuffer.estDefault) {
 
-        var nombreCelluleBLank = this.map.recupererNombreElementColonneAvecStatus(cell.y, Status.STATE_BLANK);
+        let nombreCelluleBLank = this.map.recupererNombreElementColonneAvecStatus(cell.y, Status.STATE_BLANK);
 
-        var nombreCelluleSurStatus = this.map.recupererNombreElementColonneAvecStatus(cell.y, statusBuffer);
+        let nombreCelluleSurStatus = this.map.recupererNombreElementColonneAvecStatus(cell.y, statusBuffer);
 
         // Si aucune
         if (nombreCelluleBLank != 0) {
           if (nombreCelluleSurStatus === this.map.tableau.length / 2) {
             cell.choisirAutreStatus(statusBuffer);
-            //this.map.tableau[cell.x][cell.y].choisirAutreStatus(statusBuffer);
-
           }
         }
       }

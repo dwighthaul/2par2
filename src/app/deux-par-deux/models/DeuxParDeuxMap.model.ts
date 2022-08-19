@@ -1,11 +1,8 @@
 import { Case } from './Case.model';
 
-//var urlFile = ;
-
-import modelJson from './../ressources/model.json';
-import { Status } from './Status.model';
 import { InformationPlateau } from './InformationPlateau.model';
 import { LevelInformation } from './LevelInformation.model';
+import { Status } from './Status.model';
 
 export class DeuxParDeuxMap {
 
@@ -14,25 +11,27 @@ export class DeuxParDeuxMap {
   tableau!: Array<Array<Case>>;
   private information!: InformationPlateau;
 
-  constructor(title: string, description: string, _: any);
-  constructor(title: string, description: string, taille: number) {
+  constructor(title: string, description: string) {
     this.title = title;
     this.description = description;
 
-    this.createDataTable(modelJson.length);
-    this.defineStatusFromJson();
   }
 
-  private defineStatusFromJson() {
+  initialiserTableau(modelJson: any) {
+    this.createDataTable(modelJson.length);
+    this.defineStatusFromJson(modelJson);
 
-    for (var i = 0; i < modelJson.length; i++) {
+  }
+  private defineStatusFromJson(modelJson: string | any[]) {
 
-      for (var j = 0; j < this.tableau[i].length; j++) {
+    for (let i = 0; i < modelJson.length; i++) {
 
-        var status = Status.listeStatus.find((status) => {
+      for (let j = 0; j < this.tableau[i].length; j++) {
+
+        let statusCell = Status.listeStatus.find((status) => {
           return (status.value == modelJson[i][j])
         });
-        var statusTarget = status || Status.STATE_BLANK
+        let statusTarget = statusCell || Status.STATE_BLANK
         this.tableau[i][j].setStatus(statusTarget);
         if (this.tableau[i][j].getStatus() != Status.STATE_BLANK) {
           this.tableau[i][j].isLocked = true;
@@ -44,9 +43,9 @@ export class DeuxParDeuxMap {
 
   private createDataTable(taille: number) {
     this.tableau = new Array(taille);
-    for (var i = 0; i < taille; i++) {
+    for (let i = 0; i < taille; i++) {
       this.tableau[i] = new Array(taille);
-      for (var j = 0; j < this.tableau[i].length; j++) {
+      for (let j = 0; j < this.tableau[i].length; j++) {
         this.tableau[i][j] = new Case(this, i, j);
       }
     }
@@ -66,8 +65,8 @@ export class DeuxParDeuxMap {
   }
 
   recupererNombreElementLigneAvecStatus(idLigne: number, status: Status) {
-    var nombreCellule = 0
-    for (var i = 0; i < this.tableau.length; i++) {
+    let nombreCellule = 0
+    for (let i = 0; i < this.tableau.length; i++) {
       if (this.tableau[idLigne][i].getStatus() === status) {
         nombreCellule++;
       }
@@ -75,15 +74,14 @@ export class DeuxParDeuxMap {
     return nombreCellule;
   }
   recupererNombreElementColonneAvecStatus(idLigne: number, status: Status) {
-    var nombreCellule = 0
-    for (var i = 0; i < this.tableau.length; i++) {
-      if (this.tableau[i][idLigne].getStatus() === status) {
+    let nombreCellule = 0
+    for (const line of this.tableau) {
+      if (line[idLigne].getStatus() === status) {
         nombreCellule++;
       }
     }
     return nombreCellule;
   }
-
 
 
 }

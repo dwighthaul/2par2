@@ -1,6 +1,6 @@
 export class Status {
   readonly value: number;
-  readonly color: String;
+  readonly color: string;
   readonly estDefault: boolean;
 
 
@@ -8,7 +8,7 @@ export class Status {
   public static STATE_ONE = new Status(1, 'bg_blue', false);
   public static STATE_TWO = new Status(2, 'bg_yellow', false);
 
-  constructor(value: number, color: String, estDefault: boolean) {
+  constructor(value: number, color: string, estDefault: boolean) {
     this.value = value;
     this.color = color;
     this.estDefault = estDefault;

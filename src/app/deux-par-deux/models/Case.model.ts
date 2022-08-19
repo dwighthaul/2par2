@@ -21,13 +21,13 @@ export class Case {
       return false;
     }
 
-    var caseValue = this.statusCase.value;
-    var tailleListe = Status.listeStatus.length;
+    let caseValue = this.statusCase.value;
+    let tailleListe = Status.listeStatus.length;
 
-    var caseValueNext =
+    let caseValueNext =
       (caseValue + (1 % tailleListe) + tailleListe) % tailleListe;
 
-    var statusSuivant = Status.listeStatus.find((status) => {
+    let statusSuivant = Status.listeStatus.find((status) => {
       return (status.value == caseValueNext)
     });
     statusSuivant = statusSuivant || Status.STATE_BLANK;

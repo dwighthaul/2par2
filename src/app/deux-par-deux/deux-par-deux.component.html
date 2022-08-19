@@ -5,17 +5,18 @@
 <button (click)="reset()">Reset!</button>
 <button (click)="lancerAlogrithmeCompletion()">Solve!</button>
 
-<p>Tableau de taille {{ map.tableau.length }} * {{ map.tableau[0].length }}</p>
+<p>Tableau de taille {{ map?.tableau.length }} * {{ map?.tableau[0].length }}</p>
 <div>&#x1f1eb;
 
   <p ngClass={{map.getInformation().level.color}} *ngIf="map.getInformation()">{{ map.getInformation().message }}</p>
 </div>
 <table>
+  <caption>Tableau des cellules</caption>
+
   <tbody>
     <tr *ngFor="let row of map.tableau">
       <td *ngFor="let cell of row" (click)="selectCase(cell)"
         [ngClass]="[cell.getStatus().color, cell.isLocked ? 'border_red' : 'border_black']">
-        <!--        [ngClass]="{ 'color' : cell.statusCase.color, 'test' : cell.isLocked ? 'red' : 'blue'}"> -->
 
 
         [{{ cell.x }}, {{ cell.y }}] - {{ cell.getStatus().value }}
