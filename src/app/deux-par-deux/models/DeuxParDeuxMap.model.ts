@@ -2,7 +2,7 @@ import { Case } from './Case.model';
 
 //var urlFile = ;
 
-import modelJson from './4_4_exemple_load.json';
+import modelJson from './../ressources/model.json';
 import { Status } from './Status.model';
 import { InformationPlateau } from './InformationPlateau.model';
 import { LevelInformation } from './LevelInformation.model';
