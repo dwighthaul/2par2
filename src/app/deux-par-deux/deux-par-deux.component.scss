@@ -1,0 +1,59 @@
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+
+  table-layout: fixed;
+  width: 100%;
+}
+
+tr {
+  display: flex;
+}
+
+td,
+th {
+  padding: 0.5rem 1rem;
+  border: 1px solid green;
+  white-space: nowrap;
+
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  width: 90px;
+  height: 90px;
+}
+
+.t-name {
+  min-width: 360px;
+  flex: 1 1 auto;
+}
+
+.t-name span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bg_blue {
+  background-color: blue;
+}
+
+.bg_yellow {
+  background-color: yellow;
+}
+
+.bg_red {
+  background-color: red;
+}
+
+.bg_white {
+  background-color: white;
+}
+
+.border_red {
+  border: 2px solid red;
+}
+
+.border_black {
+  border: 2px solid black;
+}
