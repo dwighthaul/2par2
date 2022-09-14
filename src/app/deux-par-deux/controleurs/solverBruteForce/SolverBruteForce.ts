@@ -62,7 +62,6 @@ export class SolverBruteForce {
     }
   }
 
-  // TODO
   calculerColonneIdentique(cell: Case) {
     for (let i = 0; i < this.map.tableau.length; i++) {
       if (i != cell.y) {
@@ -71,13 +70,10 @@ export class SolverBruteForce {
         });
         // Si la colonne est complete
         if (cellDiffDefault.length === this.map.tableau.length) {
-          console.log("ICI", cell.toString())
 
-          var colonnedeCellule = this.map.tableau.map(ligne => ligne[cell.y]);
-          //          console.log(colonnedeCellule.map(c => c.toString()))
+          let colonnedeCellule = this.map.tableau.map(ligne => ligne[cell.y]);
 
-          var colonneAComparer = this.map.tableau.map(ligne => ligne[i]);
-          //          console.log(colonneAComparer.map(c => c.toString()))
+          let colonneAComparer = this.map.tableau.map(ligne => ligne[i]);
 
           let cellsDiff = this.arrayDiff(colonnedeCellule, colonneAComparer);
           if (cellsDiff.length === 2) {

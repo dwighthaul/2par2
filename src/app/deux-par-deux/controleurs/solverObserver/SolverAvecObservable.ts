@@ -22,7 +22,7 @@ export class SolverAvecObservable {
 
         for (let row of this.map.tableau) {
           for (let cell of row) {
-
+            // TODO
           }
         }
       }

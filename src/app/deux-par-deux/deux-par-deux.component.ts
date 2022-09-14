@@ -27,8 +27,7 @@ export class DeuxParDeuxComponent implements OnInit {
   }
 
 
-  lancerSolver() {
-    //    this.lancerAlogrithmeCompletionBruteForce();
+  lancerSolverObserver() {
     this.lancerAlogrithmeCompletionObserveur();
   }
 
@@ -53,7 +52,6 @@ export class DeuxParDeuxComponent implements OnInit {
     if (!caseModifiee) {
       this.map.setInformation("la case est vérouillée", LevelInformation.ERROR);
     }
-
   }
 
 
