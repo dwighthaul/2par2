@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Solver } from './controleurs/solverBruteForce/Solver';
+import { SolverBruteForce } from './controleurs/solverBruteForce/SolverBruteForce';
+import { SolverAvecObservable } from './controleurs/solverObserver/SolverAvecObservable';
 import { Case } from './models/Case.model';
 import { DeuxParDeuxMap } from './models/DeuxParDeuxMap.model';
 import { LevelInformation } from './models/LevelInformation.model';
@@ -12,6 +13,7 @@ import modelJson from './ressources/model.json';
 })
 export class DeuxParDeuxComponent implements OnInit {
   map!: DeuxParDeuxMap;
+
   constructor() {
     this.map = new DeuxParDeuxMap('Titre', 'Desc');
   }
@@ -24,8 +26,23 @@ export class DeuxParDeuxComponent implements OnInit {
     this.map.initialiserTableau(modelJson);
   }
 
-  lancerAlogrithmeCompletion() {
-    let s = new Solver(this.map);
+
+  lancerSolver() {
+    //    this.lancerAlogrithmeCompletionBruteForce();
+    this.lancerAlogrithmeCompletionObserveur();
+  }
+
+  lancerSolverBruteForcer() {
+    this.lancerAlogrithmeCompletionBruteForce();
+  }
+
+  private lancerAlogrithmeCompletionBruteForce() {
+    let s = new SolverBruteForce(this.map);
+    s.solveMap();
+  }
+
+  private lancerAlogrithmeCompletionObserveur() {
+    let s = new SolverAvecObservable(this.map);
     s.solveMap();
   }
 

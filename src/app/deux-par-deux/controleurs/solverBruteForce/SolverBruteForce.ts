@@ -1,10 +1,11 @@
 import { Case } from '../../models/Case.model';
 import { DeuxParDeuxMap } from '../../models/DeuxParDeuxMap.model';
 import { Status } from '../../models/Status.model';
+import { Solver } from '../Solver';
 import { SolverColumn } from './SolverColumn';
 import { SolverLine } from './SolverLigne';
 
-export class Solver {
+export class SolverBruteForce {
   map: DeuxParDeuxMap;
   solverLine: SolverLine;
   solverColumn: SolverColumn;
@@ -22,7 +23,7 @@ export class Solver {
     let nbrCasesVides;
     do {
       nbrLoop++;
-      nbrCasesVides = this.verifierSiTableauRemplis()
+      nbrCasesVides = Solver.verifierSiTableauRemplis(this.map.tableau)
       if (nbrCasesVides > 0) {
 
         for (let row of this.map.tableau) {
@@ -34,18 +35,9 @@ export class Solver {
 
       }
     } while ((nbrCasesVides != 0) && nbrLoop < nbrLoopMax)
-    console.log("Fin")
+    console.log("Fin avec", nbrLoop, "boucles")
   }
 
-
-  verifierSiTableauRemplis() {
-    return this.map.tableau.reduce((total, listeCase) => {
-      let nbrCaseVides = listeCase.filter((cell) => {
-        return cell.getStatus().estDefault
-      }).length;
-      return total + nbrCaseVides;
-    }, 0)
-  }
 
 
   // Verification des cellules de droite et bas
@@ -65,9 +57,36 @@ export class Solver {
     if (cell && cell.getStatus().estDefault) {
       this.calculerLigneIdentique(cell);
     }
-
+    if (cell && cell.getStatus().estDefault) {
+      this.calculerColonneIdentique(cell);
+    }
   }
 
+  // TODO
+  calculerColonneIdentique(cell: Case) {
+    for (let i = 0; i < this.map.tableau.length; i++) {
+      if (i != cell.y) {
+        const cellDiffDefault = this.map.tableau.filter((cellLoop) => {
+          return (!cellLoop[i].getStatus().estDefault)
+        });
+        // Si la colonne est complete
+        if (cellDiffDefault.length === this.map.tableau.length) {
+          console.log("ICI", cell.toString())
+
+          var colonnedeCellule = this.map.tableau.map(ligne => ligne[cell.y]);
+          //          console.log(colonnedeCellule.map(c => c.toString()))
+
+          var colonneAComparer = this.map.tableau.map(ligne => ligne[i]);
+          //          console.log(colonneAComparer.map(c => c.toString()))
+
+          let cellsDiff = this.arrayDiff(colonnedeCellule, colonneAComparer);
+          if (cellsDiff.length === 2) {
+            this.completeCellDepuisColonne(cell, cellsDiff);
+          }
+        }
+      }
+    }
+  }
 
   calculerLigneIdentique(cell: Case) {
 
@@ -80,7 +99,7 @@ export class Solver {
         if (cellDiffDefault.length === this.map.tableau.length) {
           let cellsDiff = this.arrayDiff(this.map.tableau[cell.x], this.map.tableau[i]);
           if (cellsDiff.length === 2) {
-            this.completeCell(cell, cellsDiff);
+            this.completeCellDepuisLigne(cell, cellsDiff);
           }
         }
       }
@@ -98,7 +117,7 @@ export class Solver {
     return diff;
   }
 
-  completeCell(cell: Case, cellsDiff: Case[]) {
+  completeCellDepuisLigne(cell: Case, cellsDiff: Case[]) {
     let cellTarget = cellsDiff.find((cellDepuisListe) => {
       console.log(cellDepuisListe.toString());
       return (cellDepuisListe.y === cell.y)
@@ -108,6 +127,19 @@ export class Solver {
       cell.choisirAutreStatus(cellTarget.getStatus());
     }
   }
+
+
+  completeCellDepuisColonne(cell: Case, cellsDiff: Case[]) {
+    let cellTarget = cellsDiff.find((cellDepuisListe) => {
+      console.log(cellDepuisListe.toString());
+      return (cellDepuisListe.x === cell.x)
+    })
+
+    if (cellTarget) {
+      cell.choisirAutreStatus(cellTarget.getStatus());
+    }
+  }
+
 
   calculerNombreCouleurSurLigne(cell: Case) {
 

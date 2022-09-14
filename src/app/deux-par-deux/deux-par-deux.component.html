@@ -3,7 +3,9 @@
 <p>{{ map.description }}</p>
 <hr />
 <button (click)="reset()">Reset!</button>
-<button (click)="lancerAlogrithmeCompletion()">Solve!</button>
+<button (click)="lancerSolver()">Solve!</button>
+<button (click)="lancerSolverBruteForcer()">Solve brut force!</button>
+
 
 <p>Tableau de taille {{ map?.tableau.length }} * {{ map?.tableau[0].length }}</p>
 <div>&#x1f1eb;
